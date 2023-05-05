@@ -23,7 +23,7 @@ namespace PBKDF2_hashing
         #region Variables Declaration 
         // Defines Hashing algorithm, number of iterations, and keys' size
         /* private const int SaltKeySize = 48; */
-        private const int HashKeySize = 128;
+        private const int HashKeySize = 24;
         protected static int Iterations = 10000;
         private static readonly HashAlgorithmName HashAlgorithm = HashAlgorithmName.SHA256;
         #endregion
@@ -37,10 +37,10 @@ namespace PBKDF2_hashing
         /// <param name="InputSaltValue"></param>
         /// <remarks>This overload doesn't takes salt value as input via method parameter</remarks>
         /// <returns>Computed hash value in byte[]</returns>
-        protected byte[] ComputeBytesHash(string inputPassword, out byte[] Salt)
+        protected static byte[] ComputeBytesHash(string inputPassword, string StringToSaltByte = "default")
         {
             // Static salt value
-            Salt = Encoding.ASCII.GetBytes("default");
+            var Salt = Encoding.ASCII.GetBytes(StringToSaltByte);
 
 
             // Computes and returning a hash value (specified KeySize) using System.Security.Cryptography.Rfc2898DeriveBytes
