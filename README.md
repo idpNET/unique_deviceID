@@ -1,10 +1,10 @@
 <br/>
 <p align="center">
   <a href="https://github.com/idpNET/unique_deviceID">
-    <img src="Resources/logo.png" alt="Logo" width="80" height="80">
+    <img src="Resources/logo.png" alt="Logo" width="90" height="80">
   </a>
 
-  <h3 align="center">Unique Hardware-based [or] Software-based device ID hash generation using PBKDF2 hashing (SHA256 Hashing Algorithm)</h3>
+  <h3 align="center">Unique Hardware-based [or] Software-based device ID hash generation using PBKDF2 hashing</h3>
 
   <p align="center">
     This project provides a unique and customizable device ID hash generation method using PBKDF2 and SHA256 hashing algorithm.
