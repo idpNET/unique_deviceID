@@ -22,7 +22,7 @@ namespace PBKDF2_hashing
     {
         #region Variables Declaration 
         // Defines Hashing algorithm, number of iterations, and keys' size
-        private const int SaltKeySize = 48;
+        /* private const int SaltKeySize = 48; */
         private const int HashKeySize = 128;
         protected static int Iterations = 10000;
         private static readonly HashAlgorithmName HashAlgorithm = HashAlgorithmName.SHA256;
