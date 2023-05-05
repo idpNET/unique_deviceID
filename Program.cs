@@ -8,41 +8,50 @@ using PBKDF2_hashing;
 
 namespace UniqueDeviceID
 {
-    internal class Program : HashGenerator
+    /// <summary>
+    /// Generates a unique device ID hash value based on hardware-based or software-based specs
+    /// </summary>
+    internal class Program : GenerateDeviceID
     {
+        #region Class Methods
         static void Main(string[] args)
         {
-            // making new instance of GenerateDeviceID class
-            GenerateDeviceID classInstance = new GenerateDeviceID();
 
-            // getting user's input (Mode selection)
+            // Gets user's input (Mode selection)
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("MODE selection: FULL (type \"y\" and press Enter) or SEMI (type \"n\" and press Enter) ?");
             var selection = Console.ReadLine();
-            
+
             Console.WriteLine("");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Red;
 
+            // Keeps tracking of device ID hash processing time
             var time = HashGenerator.RunTimeMeasurement(() =>
             {
-                // Generating device unique ID based on user mode selection
+               
+                // Generates device unique ID based on user mode selection
                 if (selection == "y")
                 {
-                    var result = classInstance.DeviceID(true);
+                    FullMode = true;
+                    var result = GetDeviceHashedID;
+
 
                     Console.WriteLine($"[FULL MODE] Unique Device ID hash is: {result}");
                 }
                 else if (selection == "n")
                 {
-                    var result = classInstance.DeviceID(false);
+                    FullMode = false;
+                    var result = GetDeviceHashedID;
                     Console.WriteLine($"[SEMI MODE] Unique Device ID hash is: {result}");
-                }else
+                }
+                else
                 {
                     Console.WriteLine("Invalid input. FULL mode selected automatically.");
                     Console.WriteLine("");
-                    var result = classInstance.DeviceID(true);
+                    FullMode = true;
+                    var result = GetDeviceHashedID;
                     Console.WriteLine($"[FULL MODE] Unique Device ID hash is: {result}");
                 }
 
@@ -56,8 +65,10 @@ namespace UniqueDeviceID
             Console.WriteLine("** Generating Device ID and Hashing process took " + time + " with " + Iterations + " times of iteration.");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
-
+            // Stops auto-closing action of console after execution
+            Console.ReadLine();
 
         }
+        #endregion
     }
 }
