@@ -82,7 +82,9 @@ namespace UniqueDeviceID
         {
             FULLMode = Mode ? true : false;
             var result = FULLMode ? GetProcessorId() + GetMACAddress() + GetVolumeSerial() + GetMotherBoardID() : GetProcessorId() + GetMACAddress() + GetMotherBoardID();
-            return HashIt(result.ToString(), out var salt);
+            var Hash = ComputeBytesHash(result.ToString(), out var salt);
+            string HashToString = MergeBytesIntoString(Hash);
+            return HashToString;
         }
     }
 }

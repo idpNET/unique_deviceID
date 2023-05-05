@@ -15,7 +15,7 @@ namespace UniqueDeviceID
             // making new instance of GenerateDeviceID class
             GenerateDeviceID classInstance = new GenerateDeviceID();
 
-            // getting user's input (Mode selecttion)
+            // getting user's input (Mode selection)
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("MODE selection: FULL (type \"y\" and press Enter) or SEMI (type \"n\" and press Enter) ?");
@@ -53,7 +53,7 @@ namespace UniqueDeviceID
             Console.ForegroundColor = ConsoleColor.Green;
             // Results
             Console.WriteLine("");
-            Console.WriteLine("** Generating Device ID and Hashing process took " + time + " with " + iterations + " times of iteration.");
+            Console.WriteLine("** Generating Device ID and Hashing process took " + time + " with " + Iterations + " times of iteration.");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
 
