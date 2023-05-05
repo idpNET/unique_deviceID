@@ -13,10 +13,32 @@ using System.Management;
 
 namespace UniqueDeviceID
 {
+    /// <summary>
+    /// Generates a unique hardware-based [or] software-based ID hash value using PBKDF2 (SHA256 hashing Algorithm and static salting)
+    /// </summary>
     internal class GenerateDeviceID : HashGenerator
     {
-        protected static bool FULLMode = true;
-        private string? GetProcessorId()
+        #region Variables Declaration 
+        protected static bool FullMode = true;
+        protected static string GetDeviceHashedID
+        {
+            get
+            {
+                return FullMode? DeviceID(true): DeviceID(false);
+            }
+        }
+
+
+
+
+        #endregion
+
+        #region Class Methods
+        /// <summary>
+        /// [hardware-based] Gets processor ID using ManagementObject
+        /// </summary>
+        /// <returns>Processor ID as string</returns>
+        private static string? GetProcessorId()
         {
             string strProcessorId = string.Empty;
             var query = new SelectQuery("Win32_processor");
@@ -29,9 +51,12 @@ namespace UniqueDeviceID
             return strProcessorId;
         }
 
-        protected string? GetMACAddress()
+        /// <summary>
+        /// [hardware-based] Gets MAC address ID using ManagementClass
+        /// </summary>
+        /// <returns>MAC address ID as string</returns>
+        private static string? GetMACAddress()
         {
-
             var mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
             var moc = mc.GetInstances();
             string MACAddress = string.Empty;
@@ -45,6 +70,7 @@ namespace UniqueDeviceID
 
                     mo.Dispose();
                 }
+
                 MACAddress = MACAddress.Replace(":", string.Empty);
 
             }
@@ -52,7 +78,12 @@ namespace UniqueDeviceID
             return MACAddress;
         }
 
-        protected string? GetVolumeSerial(string strDriveLetter = "C")
+        /// <summary>
+        /// [software-based] Gets Volume Serial value using ManagementObject
+        /// </summary>
+        /// <param name="strDriveLetter"></param>
+        /// <returns>Volume Serial value as string</returns>
+        private static string? GetVolumeSerial(string strDriveLetter = "C")
         {
 
             var disk = new ManagementObject(string.Format("win32_logicaldisk.deviceid=\"{0}:\"", strDriveLetter));
@@ -62,7 +93,11 @@ namespace UniqueDeviceID
             return dskValue;
         }
 
-        protected string? GetMotherBoardID()
+        /// <summary>
+        /// [hardware-based] Gets motherboard ID using ManagementObject
+        /// </summary>
+        /// <returns>Motherboard ID as string</returns>
+        private static string? GetMotherBoardID()
         {
 
             string strMotherBoardID = string.Empty;
@@ -77,14 +112,20 @@ namespace UniqueDeviceID
 
         }
 
-
-        public string DeviceID(bool Mode)
+        /// <summary>
+        /// Gets unique device ID hash value
+        /// </summary>
+        /// <param name="Mode"></param>
+        /// <remarks>Modes: 1- FUll mode which uses both the hardware and software specs for device ID generation  2- Semi mode which only uses hardware specs for device ID generation</remarks>
+        /// <returns>Device ID hash value as string</returns>
+        private static string DeviceID(bool Mode)
         {
-            FULLMode = Mode ? true : false;
-            var result = FULLMode ? GetProcessorId() + GetMACAddress() + GetVolumeSerial() + GetMotherBoardID() : GetProcessorId() + GetMACAddress() + GetMotherBoardID();
-            var Hash = ComputeBytesHash(result.ToString(), out var salt);
+            FullMode = Mode ? true : false;
+            var result = FullMode ? GetProcessorId() + GetMACAddress() + GetVolumeSerial() + GetMotherBoardID() : GetProcessorId() + GetMACAddress() + GetMotherBoardID();
+            var Hash = ComputeBytesHash(result.ToString());
             string HashToString = MergeBytesIntoString(Hash);
             return HashToString;
         }
+        #endregion
     }
 }
